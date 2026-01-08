@@ -1,6 +1,6 @@
 #include "st7789.h"
 
-/* ST7789 command codes (subset) [file:2] */
+/* ST7789 command codes (subset) */
 #define ST7789_CMD_SWRESET  0x01
 #define ST7789_CMD_SLPOUT   0x11
 #define ST7789_CMD_DISPON   0x29
@@ -20,14 +20,14 @@
 static void st7789_hw_reset(st7789_t *lcd)
 {
     lcd->reset_assert();
-    lcd->delay_ms(10);      /* TRW ≥ 10 µs, be generous [file:2] */
+    lcd->delay_ms(10);      /* TRW ≥ 10 µs, be generous */
     lcd->reset_release();
-    lcd->delay_ms(120);     /* tRT up to 120 ms: internal init/NVM load [file:2] */
+    lcd->delay_ms(120);     /* tRT up to 120 ms: internal init/NVM load */
 }
 
 static void st7789_set_madctl(st7789_t *lcd)
 {
-    uint8_t mad = MADCTL_BGR;   /* ST7789 modules usually wired BGR [file:3] */
+    uint8_t mad = MADCTL_BGR;   /* ST7789 modules usually wired BGR */
 
     switch (lcd->orientation) {
     case ST7789_ORIENT_PORTRAIT:
@@ -59,7 +59,7 @@ bool st7789_init(st7789_t *lcd)
 
     /* Sleep out */
     lcd->write_cmd(ST7789_CMD_SLPOUT);
-    lcd->delay_ms(120);     /* datasheet requirement after SLPOUT [file:2] */
+    lcd->delay_ms(120);     /* datasheet requirement after SLPOUT */
 
     /* Pixel format (3Ah) – just pass lower byte of enum */
     lcd->write_cmd1(ST7789_CMD_COLMOD, lcd->color_mode & 0xFF);
@@ -67,7 +67,7 @@ bool st7789_init(st7789_t *lcd)
     /* Memory access control */
     st7789_set_madctl(lcd);
 
-    /* Full window as default (240x320) [file:2][file:3] */
+    /* Full window as default (240x320) */
     st7789_set_window(lcd, 0, 0, lcd->width - 1, lcd->height - 1);
 
     /* Display ON */
@@ -83,7 +83,7 @@ void st7789_set_orientation(st7789_t *lcd, st7789_orientation_t o)
     st7789_set_madctl(lcd);
 }
 
-/* Column/row address set – CASET/RASET [file:2] */
+/* Column/row address set – CASET/RASET */
 void st7789_set_window(st7789_t *lcd,
                        uint16_t x0, uint16_t y0,
                        uint16_t x1, uint16_t y1)

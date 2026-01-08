@@ -12,12 +12,12 @@ typedef enum {
 } st7789_orientation_t;
 
 typedef enum {
-    ST7789_COLOR_MODE_RGB565 = 0x55,  /* 16‑bpp, 65K colors (3Ah, DB[6:4]=101) [file:2] */
-    ST7789_COLOR_MODE_RGB666 = 0x66   /* 18‑bpp, 262K colors (3Ah, DB[6:4]=110) [file:2] */
+    ST7789_COLOR_MODE_RGB565 = 0x55,  /* 16‑bpp, 65K colors (3Ah, DB[6:4]=101) */
+    ST7789_COLOR_MODE_RGB666 = 0x66   /* 18‑bpp, 262K colors (3Ah, DB[6:4]=110) */
 } st7789_color_mode_t;
 
 typedef struct {
-    uint16_t width;           /* logical width (e.g. 240) [file:2][file:3] */
+    uint16_t width;           /* logical width (e.g. 240) */
     uint16_t height;          /* logical height (e.g. 320) */
     st7789_orientation_t orientation;
     st7789_color_mode_t  color_mode;

@@ -10,7 +10,7 @@
 #define ST7789_CMD_MADCTL   0x36
 #define ST7789_CMD_COLMOD   0x3A
 
-/* MADCTL bits [file:2] */
+/* MADCTL bits */
 #define MADCTL_MY  0x80
 #define MADCTL_MX  0x40
 #define MADCTL_MV  0x20

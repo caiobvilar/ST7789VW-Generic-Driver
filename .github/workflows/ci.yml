@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: default, cmake_args: "" }
+          - { name: serial-on, cmake_args: "-DST7789_ENABLE_SERIAL_PORT=ON" }
+          - { name: spi-off, cmake_args: "-DST7789_ENABLE_SPI_PORT=OFF" }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure (${{ matrix.config.name }})
+        run: |
+          cmake -S . -B build-${{ matrix.config.name }} -DCMAKE_BUILD_TYPE=Release ${{ matrix.config.cmake_args }}
+
+      - name: Build (${{ matrix.config.name }})
+        run: |
+          cmake --build build-${{ matrix.config.name }} -j
+
+      - name: Install (${{ matrix.config.name }})
+        run: |
+          cmake --install build-${{ matrix.config.name }} --prefix install-${{ matrix.config.name }}

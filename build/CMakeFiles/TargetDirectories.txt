@@ -1,0 +1,9 @@
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/st7789.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/package.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/package_source.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/edit_cache.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/rebuild_cache.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/list_install_components.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/install.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/install/local.dir
+/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/CMakeFiles/install/strip.dir

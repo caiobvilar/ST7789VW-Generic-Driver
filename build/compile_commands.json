@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/hellscoffe/Development/ST7789VW-Generic-Driver/build",
+  "command": "/usr/lib64/ccache/cc  -I/home/hellscoffe/Development/ST7789VW-Generic-Driver/core/include -O3 -DNDEBUG -o CMakeFiles/st7789.dir/core/src/st7789.c.o -c /home/hellscoffe/Development/ST7789VW-Generic-Driver/core/src/st7789.c",
+  "file": "/home/hellscoffe/Development/ST7789VW-Generic-Driver/core/src/st7789.c",
+  "output": "CMakeFiles/st7789.dir/core/src/st7789.c.o"
+},
+{
+  "directory": "/home/hellscoffe/Development/ST7789VW-Generic-Driver/build",
+  "command": "/usr/lib64/ccache/cc  -I/home/hellscoffe/Development/ST7789VW-Generic-Driver/core/include -O3 -DNDEBUG -o CMakeFiles/st7789.dir/porting/spi/st7789_port_spi.c.o -c /home/hellscoffe/Development/ST7789VW-Generic-Driver/porting/spi/st7789_port_spi.c",
+  "file": "/home/hellscoffe/Development/ST7789VW-Generic-Driver/porting/spi/st7789_port_spi.c",
+  "output": "CMakeFiles/st7789.dir/porting/spi/st7789_port_spi.c.o"
+}
+]

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libst7789.a CMakeFiles/st7789.dir/core/src/st7789.c.o CMakeFiles/st7789.dir/porting/spi/st7789_port_spi.c.o
-/usr/bin/ranlib libst7789.a

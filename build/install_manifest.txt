@@ -1,6 +1,0 @@
-/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/_CPack_Packages/Linux/ZIP/st7789-1.0.0-Linux/lib/libst7789.a
-/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/_CPack_Packages/Linux/ZIP/st7789-1.0.0-Linux/include/st7789.h
-/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/_CPack_Packages/Linux/ZIP/st7789-1.0.0-Linux/lib/cmake/st7789/st7789Targets.cmake
-/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/_CPack_Packages/Linux/ZIP/st7789-1.0.0-Linux/lib/cmake/st7789/st7789Targets-release.cmake
-/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/_CPack_Packages/Linux/ZIP/st7789-1.0.0-Linux/lib/cmake/st7789/st7789Config.cmake
-/home/hellscoffe/Development/ST7789VW-Generic-Driver/build/_CPack_Packages/Linux/ZIP/st7789-1.0.0-Linux/lib/cmake/st7789/st7789ConfigVersion.cmake

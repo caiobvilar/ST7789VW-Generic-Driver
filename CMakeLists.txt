@@ -31,46 +31,7 @@ target_include_directories(st7789
 # Keep compile options generic; MCU/optimization flags belong in the parent project
 target_compile_features(st7789 PUBLIC c_std_99)
 
-# Install and package configuration
-include(CMakePackageConfigHelpers)
-
-# Install target and export it for find_package(CONFIG)
-install(TARGETS st7789
-        EXPORT st7789Targets
-        ARCHIVE DESTINATION lib
-)
-
-install(DIRECTORY core/include/ DESTINATION include)
-
-install(EXPORT st7789Targets
-        NAMESPACE st7789::
-        FILE st7789Targets.cmake
-        DESTINATION lib/cmake/st7789)
-
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/st7789ConfigVersion.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-
-configure_package_config_file(
-    "${CMAKE_CURRENT_LIST_DIR}/cmake/st7789Config.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/st7789Config.cmake"
-    INSTALL_DESTINATION "lib/cmake/st7789"
-)
-
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/st7789Config.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/st7789ConfigVersion.cmake"
-    DESTINATION lib/cmake/st7789
-)
-
-# Packaging via CPack
-set(CPACK_PACKAGE_NAME "st7789")
-set(CPACK_PACKAGE_VENDOR "st7789 maintainers")
-set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_PACKAGE_CONTACT "maintainers@example.com")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_LIST_DIR}/LICENSE")
-set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_LIST_DIR}/README.md")
-set(CPACK_GENERATOR "TGZ;ZIP")
-include(CPack)
+# Install and package configuration disabled for submodule usage
+# Uncomment if you want to install this library standalone
+# include(CMakePackageConfigHelpers)
+# install(TARGETS st7789 ...)

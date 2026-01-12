@@ -29,7 +29,7 @@ st7789_hw_reset(st7789_t* lcd)
 static void
 st7789_set_madctl(st7789_t* lcd)
 {
-    uint8_t mad = MADCTL_BGR; // ST7789 modules usually wired BGR
+    uint8_t mad = MADCTL_BGR; // Use RGB order by default; set BGR if panel needs it
 
     switch (lcd->orientation)
     {
@@ -60,43 +60,44 @@ st7789_init(st7789_t* lcd)
         return false;
     }
 
-    // Hardware reset
-    st7789_hw_reset(lcd);
-
-    // Software reset
-    lcd->write_cmd(ST7789_CMD_SWRESET); // 0x01
-    lcd->delay_ms(150);
-
-    // Sleep out
-    lcd->write_cmd(ST7789_CMD_SLPOUT); // 0x11
+    /* Hardware reset: same timings as old BSP */
+    lcd->reset_release(); // RST high
+    lcd->delay_ms(10);
+    lcd->reset_assert(); // RST low
+    lcd->delay_ms(20);
+    lcd->reset_release(); // RST high
     lcd->delay_ms(120);
 
-    // Color mode - 16bit RGB565
-    lcd->write_cmd1(ST7789_CMD_COLMOD, ST7789_COLOR_MODE_RGB565 & 0xFF); // 0x3A, 0x55
+    /* Software reset */
+    lcd->write_cmd(0x01); // SWRESET
+    lcd->delay_ms(150);
 
-    // Memory data access control - match your old 0x00
-    lcd->write_cmd1(ST7789_CMD_MADCTL, 0x00); // no MX/MY/MV/BGR
+    /* Sleep out */
+    lcd->write_cmd(0x11); // SLPOUT
+    lcd->delay_ms(120);
 
-    // Column address set (0 to 239)
+    /* Color mode: 16‑bit RGB565 */
+    lcd->write_cmd1(0x3A, 0x55); // COLMOD
+
+    /* MADCTL: match old BSP (no MX/MY/MV, RGB) */
+    lcd->write_cmd1(0x36, 0x00); // MADCTL
+
+    /* Column address set: X = 0..239 */
     {
         uint8_t caset[4] = {0x00, 0x00, 0x00, 0xEF};
-        lcd->write_cmdN(ST7789_CMD_CASET, caset, 4); // 0x2A
+        lcd->write_cmdN(0x2A, caset, 4); // CASET
     }
 
-    // Row address set (0 to 319)
+    /* Row address set: Y = 0..319 */
     {
         uint8_t raset[4] = {0x00, 0x00, 0x01, 0x3F};
-        lcd->write_cmdN(ST7789_CMD_RASET, raset, 4); // 0x2B
+        lcd->write_cmdN(0x2B, raset, 4); // RASET
     }
 
-    // Display inversion on
-    lcd->write_cmd(0x21);
-
-    // Normal display mode
-    lcd->write_cmd(0x13);
-
-    // Display on
-    lcd->write_cmd(ST7789_CMD_DISPON); // 0x29
+    /* Display inversion on, normal mode, display on */
+    lcd->write_cmd(0x21); // INVON
+    lcd->write_cmd(0x13); // NORON
+    lcd->write_cmd(0x29); // DISPON
     lcd->delay_ms(100);
 
     return true;
@@ -109,7 +110,7 @@ st7789_set_orientation(st7789_t* lcd, st7789_orientation_t o)
     st7789_set_madctl(lcd);
 }
 
-#define X_OFFSET 50 // will tune below
+#define X_OFFSET 0 // will tune below
 #define Y_OFFSET 0
 
 /* Column/row address set – CASET/RASET */

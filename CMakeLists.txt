@@ -11,14 +11,6 @@ set(ST7789_SOURCES
     core/src/st7789.c
 )
 
-if(ST7789_ENABLE_SPI_PORT)
-    list(APPEND ST7789_SOURCES porting/spi/st7789_port_spi.c)
-endif()
-
-if(ST7789_ENABLE_SERIAL_PORT)
-    list(APPEND ST7789_SOURCES porting/serial/st7789_port_serial.c)
-endif()
-
 add_library(st7789 STATIC ${ST7789_SOURCES})
 
 # Public include dir so consuming targets can do: target_link_libraries(app PRIVATE st7789)
@@ -26,6 +18,8 @@ target_include_directories(st7789
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/core/include>
         $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/../../Board/STM32F411E/TFT-SPI-2-GTM020-02
 )
 
 # Keep compile options generic; MCU/optimization flags belong in the parent project

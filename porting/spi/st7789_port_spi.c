@@ -1,52 +1,48 @@
 // st7789_port_spi.c
-#include "f411E_lcd.h" // for pin macros and extern hspi1
 #include "st7789.h"
-#include "stm32f4xx_hal.h"
-
-extern SPI_HandleTypeDef hspi1;
 
 /* MCU-specific helpers */
 
 static void
 hal_reset_assert(void)
 {
-    LCD_RST_LOW();
+    //    LCD_RST_LOW();
 }
 
 static void
 hal_reset_release(void)
 {
-    LCD_RST_HIGH();
+    //    LCD_RST_HIGH();
 }
 
 static void
 hal_delay_ms(uint32_t ms)
 {
-    HAL_Delay(ms);
+    //    HAL_Delay(ms);
 }
 
 static void
 spi_cs_low(void)
 {
-    LCD_CS_LOW();
+    //    LCD_CS_LOW();
 }
 
 static void
 spi_cs_high(void)
 {
-    LCD_CS_HIGH();
+    //    LCD_CS_HIGH();
 }
 
 static void
 spi_dc_cmd(void)
 {
-    LCD_DC_LOW();
+    //    LCD_DC_LOW();
 }
 
 static void
 spi_dc_data(void)
 {
-    LCD_DC_HIGH();
+    // LCD_DC_HIGH();
 }
 
 static void
@@ -56,7 +52,7 @@ spi_write(const uint8_t* data, uint32_t len)
     {
         return;
     }
-    HAL_SPI_Transmit(&hspi1, (uint8_t*)data, len, HAL_MAX_DELAY);
+    // HAL_SPI_Transmit(&hspi1, (uint8_t*)data, len, HAL_MAX_DELAY);
 }
 
 /* Driver-facing callbacks */

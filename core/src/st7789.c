@@ -25,19 +25,21 @@ st7789_set_madctl(st7789_t* lcd)
     switch (lcd->orientation)
     {
     case ST7789_ORIENT_PORTRAIT:
-        mad |= MADCTL_MX;
+        /* Portrait 0°: MV=0, MX=0, MY=0 */
         break;
     case ST7789_ORIENT_LANDSCAPE:
+        /* Landscape 90°: MV=1 */
         mad |= MADCTL_MV;
         break;
     case ST7789_ORIENT_PORTRAIT_INV:
-        mad |= MADCTL_MY;
+        /* Portrait inverted 180°: MX=1, MY=1 */
+        mad |= MADCTL_MX | MADCTL_MY;
         break;
     case ST7789_ORIENT_LANDSCAPE_INV:
-        mad |= MADCTL_MX | MADCTL_MY | MADCTL_MV;
+        /* Landscape inverted 270°: MV=1, MX=1 */
+        mad |= MADCTL_MV | MADCTL_MX;
         break;
     }
-
 
     lcd->write_cmd1(ST7789_CMD_MADCTL, mad);
 }
@@ -105,8 +107,55 @@ st7789_init(st7789_t* lcd)
 void
 st7789_set_orientation(st7789_t* lcd, st7789_orientation_t o)
 {
+    bool is_landscape_now =
+        (lcd->orientation == ST7789_ORIENT_LANDSCAPE || lcd->orientation == ST7789_ORIENT_LANDSCAPE_INV);
+    bool is_landscape_new = (o == ST7789_ORIENT_LANDSCAPE || o == ST7789_ORIENT_LANDSCAPE_INV);
+
+    /* Swap width/height when transitioning between portrait and landscape */
+    if (is_landscape_now != is_landscape_new)
+    {
+        uint16_t temp = lcd->width;
+        lcd->width = lcd->height;
+        lcd->height = temp;
+    }
+
     lcd->orientation = o;
     st7789_set_madctl(lcd);
+
+    /* Re-initialize CASET and RASET to physical ranges for new orientation */
+    uint8_t buf[4];
+    bool landscape = (o == ST7789_ORIENT_LANDSCAPE || o == ST7789_ORIENT_LANDSCAPE_INV);
+
+    if (landscape)
+    {
+        /* In landscape: CASET = Y range (0-319), RASET = X range (0-239) */
+        buf[0] = 0x00;
+        buf[1] = 0x00;
+        buf[2] = 0x01;
+        buf[3] = 0x3F; // 0-319 for Y
+        lcd->write_cmdN(ST7789_CMD_CASET, buf, 4);
+
+        buf[0] = 0x00;
+        buf[1] = 0x00;
+        buf[2] = 0x00;
+        buf[3] = 0xEF; // 0-239 for X
+        lcd->write_cmdN(ST7789_CMD_RASET, buf, 4);
+    }
+    else
+    {
+        /* In portrait: CASET = X range (0-239), RASET = Y range (0-319) */
+        buf[0] = 0x00;
+        buf[1] = 0x00;
+        buf[2] = 0x00;
+        buf[3] = 0xEF; // 0-239 for X
+        lcd->write_cmdN(ST7789_CMD_CASET, buf, 4);
+
+        buf[0] = 0x00;
+        buf[1] = 0x00;
+        buf[2] = 0x01;
+        buf[3] = 0x3F; // 0-319 for Y
+        lcd->write_cmdN(ST7789_CMD_RASET, buf, 4);
+    }
 }
 
 /* Column/row address set – CASET/RASET */

@@ -109,34 +109,49 @@ st7789_set_orientation(st7789_t* lcd, st7789_orientation_t o)
     st7789_set_madctl(lcd);
 }
 
-#define X_OFFSET 0 // will tune below
-#define Y_OFFSET 0
-
 /* Column/row address set – CASET/RASET */
 void
 st7789_set_window(st7789_t* lcd, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 {
     uint8_t buf[4];
 
-    /* Apply panel RAM origin offsets once, here */
-    x0 += X_OFFSET;
-    x1 += X_OFFSET;
-    y0 += Y_OFFSET;
-    y1 += Y_OFFSET;
+    /* When MV bit is set (landscape), CASET and RASET are swapped */
+    bool landscape = (lcd->orientation == ST7789_ORIENT_LANDSCAPE || lcd->orientation == ST7789_ORIENT_LANDSCAPE_INV);
 
-    /* 0x2A – CASET (Column Address Set) */
-    buf[0] = (uint8_t)(x0 >> 8);
-    buf[1] = (uint8_t)(x0 & 0xFF);
-    buf[2] = (uint8_t)(x1 >> 8);
-    buf[3] = (uint8_t)(x1 & 0xFF);
-    lcd->write_cmdN(ST7789_CMD_CASET, buf, 4);
+    if (landscape)
+    {
+        /* In landscape: CASET controls Y, RASET controls X */
+        /* 0x2A – CASET (now Y coordinate) */
+        buf[0] = (uint8_t)(y0 >> 8);
+        buf[1] = (uint8_t)(y0 & 0xFF);
+        buf[2] = (uint8_t)(y1 >> 8);
+        buf[3] = (uint8_t)(y1 & 0xFF);
+        lcd->write_cmdN(ST7789_CMD_CASET, buf, 4);
 
-    /* 0x2B – RASET (Row Address Set) */
-    buf[0] = (uint8_t)(y0 >> 8);
-    buf[1] = (uint8_t)(y0 & 0xFF);
-    buf[2] = (uint8_t)(y1 >> 8);
-    buf[3] = (uint8_t)(y1 & 0xFF);
-    lcd->write_cmdN(ST7789_CMD_RASET, buf, 4);
+        /* 0x2B – RASET (now X coordinate) */
+        buf[0] = (uint8_t)(x0 >> 8);
+        buf[1] = (uint8_t)(x0 & 0xFF);
+        buf[2] = (uint8_t)(x1 >> 8);
+        buf[3] = (uint8_t)(x1 & 0xFF);
+        lcd->write_cmdN(ST7789_CMD_RASET, buf, 4);
+    }
+    else
+    {
+        /* In portrait: CASET controls X, RASET controls Y */
+        /* 0x2A – CASET (Column Address Set) */
+        buf[0] = (uint8_t)(x0 >> 8);
+        buf[1] = (uint8_t)(x0 & 0xFF);
+        buf[2] = (uint8_t)(x1 >> 8);
+        buf[3] = (uint8_t)(x1 & 0xFF);
+        lcd->write_cmdN(ST7789_CMD_CASET, buf, 4);
+
+        /* 0x2B – RASET (Row Address Set) */
+        buf[0] = (uint8_t)(y0 >> 8);
+        buf[1] = (uint8_t)(y0 & 0xFF);
+        buf[2] = (uint8_t)(y1 >> 8);
+        buf[3] = (uint8_t)(y1 & 0xFF);
+        lcd->write_cmdN(ST7789_CMD_RASET, buf, 4);
+    }
 }
 
 void
